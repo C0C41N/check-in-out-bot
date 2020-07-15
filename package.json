@@ -4,5 +4,8 @@
 	"description": "Line Bot",
 	"scripts": {},
 	"author": "C0C41N",
-	"license": "ISC"
+	"license": "ISC",
+	"dependencies": {
+		"axios": "^0.19.2"
+	}
 }

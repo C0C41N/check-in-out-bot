@@ -1,0 +1,96 @@
+// DM FROM ME
+
+({
+	"events": [
+		{
+			"type": "message",
+			"replyToken": "ea6a646b67ac4766b4675ab2f12667cb",
+			"source": { "userId": "U9f7ee97be0ff6c9a95df0cec742665e0", "type": "user" },
+			"timestamp": 1594818172770,
+			"mode": "active",
+			"message": { "type": "text", "id": "12323910767475", "text": "Hi bitxh! " }
+		}
+	],
+	"destination": "U77d17337c30e7ab9c5139cf8f390c9be"
+},
+// NERD GROUP TEXT - ME
+
+{
+	"events": [
+		{
+			"type": "message",
+			"replyToken": "4b7f66d945b64e6c9b21d71511aa1ed4",
+			"source": {
+				"userId": "U9f7ee97be0ff6c9a95df0cec742665e0",
+				"groupId": "C37485913cb5c7dd904eaa1e8e05f2c71",
+				"type": "group"
+			},
+			"timestamp": 1594818327554,
+			"mode": "active",
+			"message": { "type": "text", "id": "12323926261854", "text": "testing... " }
+		}
+	],
+	"destination": "U77d17337c30e7ab9c5139cf8f390c9be"
+},
+// NERD GROUP - VIVI
+
+{
+	"events": [
+		{
+			"type": "message",
+			"replyToken": "a9b1ed8fdd854608acef339a51f259d0",
+			"source": {
+				"userId": "U5aa429527ab243959208f2c46bf854f7",
+				"groupId": "C37485913cb5c7dd904eaa1e8e05f2c71",
+				"type": "group"
+			},
+			"timestamp": 1594818361193,
+			"mode": "active",
+			"message": { "type": "text", "id": "12323929615947", "text": "XD" }
+		}
+	],
+	"destination": "U77d17337c30e7ab9c5139cf8f390c9be"
+},
+// LOCATION
+
+{
+	"events": [
+		{
+			"type": "message",
+			"replyToken": "d82107eff53b46708c6f3224d304b65f",
+			"source": { "userId": "U9f7ee97be0ff6c9a95df0cec742665e0", "type": "user" },
+			"timestamp": 1594823362018,
+			"mode": "active",
+			"message": {
+				"type": "location",
+				"id": "12324393695332",
+				"address": "A-4 St, Thakra, Rawalpindi, Punjab, Pakistan",
+				"latitude": 33.103704,
+				"longitude": 73.175097
+			}
+		}
+	],
+	"destination": "U77d17337c30e7ab9c5139cf8f390c9be"
+},
+// JOIN
+
+{
+	"events": [
+		{
+			"type": "memberJoined",
+			"replyToken": "399779d23da24803b8ab317ff3f8814b",
+			"source": {
+				"groupId": "C37485913cb5c7dd904eaa1e8e05f2c71",
+				"type": "group"
+			},
+			"timestamp": 1594820196906,
+			"mode": "active",
+			"joined": {
+				"members": [
+					{ "userId": "U363e34cc358ce935b0ad813969f374bc", "type": "user" }
+				]
+			}
+		}
+	],
+	"destination": "U77d17337c30e7ab9c5139cf8f390c9be"
+})

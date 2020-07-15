@@ -1,17 +1,13 @@
 {
 	"compilerOptions": {
-		"target": "ES5",
-		"allowJs": true,
-		"skipLibCheck": true,
-		"esModuleInterop": true,
-		"allowSyntheticDefaultImports": true,
+		"module": "commonjs",
+		"noImplicitReturns": true,
+		"noUnusedLocals": true,
+		"outDir": "functions",
+		"sourceMap": true,
 		"strict": true,
-		"forceConsistentCasingInFileNames": true,
-		"module": "esnext",
-		"moduleResolution": "node",
-		"resolveJsonModule": true,
-		"isolatedModules": true,
-		"noEmit": true
+		"target": "es2017"
 	},
-	"include": ["functions"]
+	"compileOnSave": true,
+	"include": ["src"]
 }

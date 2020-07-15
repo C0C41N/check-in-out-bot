@@ -1,0 +1,2 @@
+export const CAT =
+	'XSwumbU2BSgoSVx9VGm6loq3x/pskr/3YW3UjlC3/XescDFHLDqNWFzpO5kyyo3PpFOic0ousUX06/Iw2Ynq6NQo1ku7vL7HSuS4tzO0y1ecyUDAIMLRuE41ivQdOBF+stCA2X8WF4zzMcNXCUo7sgdB04t89/1O/w1cDnyilFU='

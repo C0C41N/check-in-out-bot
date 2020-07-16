@@ -52,3 +52,10 @@ export interface IUserProfile {
 	pictureUrl: string
 	statusMessage?: string
 }
+
+export interface IText {
+	type: 'text'
+	text: string
+}
+
+export type ITextArray = IText[]

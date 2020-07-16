@@ -2,7 +2,7 @@ import axios from 'axios'
 
 import { CAT, CheckInFormURL, CheckOutFormURL } from './const'
 import { db } from './db'
-import { IUserProfile, Response } from './types'
+import { ITextArray, IUserProfile, Response } from './types'
 
 export async function getProfile(
 	userId: string
@@ -21,7 +21,12 @@ export async function getProfile(
 	}
 }
 
-export async function ToCheckIn(userId: string, res: Response, end = false) {
+export async function ToCheckIn(
+	userId: string,
+	res: Response,
+	replyToken: string,
+	end = false
+) {
 	// Get DisplayName
 	let username: string
 
@@ -34,17 +39,23 @@ export async function ToCheckIn(userId: string, res: Response, end = false) {
 		return
 	}
 
+	// Get Timestamp
+	const timestamp = getTimestamp()
+
 	// Add user to db
-	AddCheckIn(username)
+	AddCheckIn(username, timestamp)
+
+	// Send reply
+	ReplyToAgent(replyToken, `${username}, CheckIn successful @ ${timestamp}`)
 
 	// End
 	if (end) res.end(`${username} checkedIn!`)
 }
 
-export async function AddCheckIn(username: string) {
+export async function AddCheckIn(username: string, timestamp: string) {
 	axios.get(CheckInFormURL(username))
 
-	const o = { checkIn: true, timestamp: getTimestamp() }
+	const o = { checkIn: true, timestamp }
 
 	db.ref(`agents/${username}`).set(o)
 }
@@ -90,4 +101,17 @@ export function getTimestamp(): string {
 	const [m, d, y] = date.split('/')
 
 	return `${d}/${m}/${y}, ${time}`
+}
+
+export function ReplyToAgent(replyToken: string, msg: string) {
+	const messages: ITextArray = [{ text: msg, type: 'text' }]
+
+	const body = { messages, replyToken }
+
+	const headers = {
+		Authorization: `Bearer ${CAT}`,
+		'Content-Type': 'application/json',
+	}
+
+	axios.post('https://api.line.me/v2/bot/message/reply', body, { headers })
 }

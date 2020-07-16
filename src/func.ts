@@ -21,7 +21,7 @@ export async function getProfile(
 	}
 }
 
-export async function ToCheckIn(
+export async function checkIn(
 	userId: string,
 	res: Response,
 	replyToken: string,
@@ -43,38 +43,39 @@ export async function ToCheckIn(
 	const timestamp = getTimestamp()
 
 	// Check if agent is already CheckedIn
-	const check = await AlreadyCheckedIn(username)
+	const check = await getAgentDB(username)
 	if (check[0] === true) {
 		// Send reply
 		const tmp = `${username}, You already Checked-In @ ${check[1]}`
-		await ReplyToAgent(replyToken, tmp)
+		await replyToAgent(replyToken, tmp)
 
 		// End
 		if (end) res.end(tmp)
 		return
 	}
 
-	// Add user to db
-	await AddCheckIn(username, timestamp)
-
-	// Send reply
-	const msg = `${username}, CheckIn successful @ ${timestamp}`
-	await ReplyToAgent(replyToken, msg)
-
-	// End
-	if (end) res.end(msg)
-}
-
-export async function AddCheckIn(username: string, timestamp: string) {
+	// Exe
 	const o = { checkIn: true, timestamp }
 
 	await Promise.all([
 		await axios.get(CheckInFormURL(username)),
 		db.ref(`agents/${username}`).set(o),
 	])
+
+	// Send reply
+	const msg = `${username}, Check-In successful @ ${timestamp}`
+	await replyToAgent(replyToken, msg)
+
+	// End
+	if (end) res.end(msg)
 }
 
-export async function ToCheckOut(userId: string, res: Response, end = false) {
+export async function checkOut(
+	userId: string,
+	res: Response,
+	replyToken: string,
+	end = false
+) {
 	// Get DisplayName
 	let username: string
 
@@ -87,25 +88,33 @@ export async function ToCheckOut(userId: string, res: Response, end = false) {
 		return
 	}
 
-	AddCheckOut(username)
+	// Check if agent is already checked out
+	const check = await getAgentDB(username)
+	if (check[0] === false) {
+		// Send reply
+		const tmp = `${username}, You aren't Checked-In.`
+		await replyToAgent(replyToken, tmp)
 
-	// End
-	if (end) res.end(`${username} checkedOut!`)
-}
+		// End
+		if (end) res.end(tmp)
+		return
+	}
 
-export async function AddCheckOut(username: string) {
-	// Get Timestamp from db
-	const timestamp = (
-		await db.ref(`agents/${username}/timestamp`).once('value')
-	).val()
-
+	// Exe
 	await Promise.all([
 		// Send Form Response
-		axios.get(CheckOutFormURL(username, timestamp)),
+		axios.get(CheckOutFormURL(username, check[1])),
 
 		// Set checkIn to false in db
 		db.ref(`agents/${username}`).update({ checkIn: false }),
 	])
+
+	// Send reply
+	const msg = `${username}, Check-Out successful @ ${getTimestamp()}`
+	await replyToAgent(replyToken, msg)
+
+	// End
+	if (end) res.end(msg)
 }
 
 export function getTimestamp(): string {
@@ -119,7 +128,7 @@ export function getTimestamp(): string {
 	return `${d}/${m}/${y}, ${time}`
 }
 
-export async function ReplyToAgent(replyToken: string, msg: string) {
+export async function replyToAgent(replyToken: string, msg: string) {
 	const messages: ITextArray = [{ text: msg, type: 'text' }]
 
 	const body = { messages, replyToken }
@@ -138,7 +147,7 @@ export async function ReplyToAgent(replyToken: string, msg: string) {
 	}
 }
 
-export async function AlreadyCheckedIn(username: string) {
+export async function getAgentDB(username: string) {
 	const { checkIn, timestamp } = (
 		await db.ref(`agents/${username}`).once('value')
 	).val()

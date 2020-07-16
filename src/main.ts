@@ -1,4 +1,4 @@
-import { ToCheckIn, ToCheckOut } from './func'
+import { checkIn, checkOut } from './func'
 import { IDirectText, Request, Response } from './types'
 
 export async function exe(req: Request, res: Response) {
@@ -16,9 +16,9 @@ export async function exe(req: Request, res: Response) {
 			const hasCheckOut: boolean = textL.includes('#checkout')
 
 			if (hasCheckIn) {
-				ToCheckIn(userId, res, replyToken, true)
+				checkIn(userId, res, replyToken, true)
 			} else if (hasCheckOut) {
-				ToCheckOut(userId, res, true)
+				checkOut(userId, res, replyToken, true)
 			} else {
 				res.end('TRR#000')
 			}

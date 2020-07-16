@@ -4,6 +4,8 @@ import { IDirectText, Request, Response } from './types'
 export async function exe(req: Request, res: Response) {
 	const body: IDirectText = JSON.parse(req.body.toString().replace(/\\/g, ''))
 
+	console.log('input: ', JSON.stringify(body, null, 3))
+
 	body.events.forEach(async e => {
 		const { type, userId } = e.source
 		const { text } = e.message

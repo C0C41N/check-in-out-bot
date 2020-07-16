@@ -43,21 +43,23 @@ export async function ToCheckIn(
 	const timestamp = getTimestamp()
 
 	// Add user to db
-	AddCheckIn(username, timestamp)
+	await AddCheckIn(username, timestamp)
 
 	// Send reply
-	ReplyToAgent(replyToken, `${username}, CheckIn successful @ ${timestamp}`)
+	const msg = `${username}, CheckIn successful @ ${timestamp}`
+	await ReplyToAgent(replyToken, msg)
 
 	// End
 	if (end) res.end(`${username} checkedIn!`)
 }
 
 export async function AddCheckIn(username: string, timestamp: string) {
-	axios.get(CheckInFormURL(username))
-
 	const o = { checkIn: true, timestamp }
 
-	db.ref(`agents/${username}`).set(o)
+	await Promise.all([
+		await axios.get(CheckInFormURL(username)),
+		db.ref(`agents/${username}`).set(o),
+	])
 }
 
 export async function ToCheckOut(userId: string, res: Response, end = false) {
@@ -85,11 +87,13 @@ export async function AddCheckOut(username: string) {
 		await db.ref(`agents/${username}/timestamp`).once('value')
 	).val()
 
-	// Send Form Response
-	axios.get(CheckOutFormURL(username, timestamp))
+	await Promise.all([
+		// Send Form Response
+		axios.get(CheckOutFormURL(username, timestamp)),
 
-	// Set checkIn to false in db
-	db.ref(`agents/${username}`).update({ checkIn: false })
+		// Set checkIn to false in db
+		db.ref(`agents/${username}`).update({ checkIn: false }),
+	])
 }
 
 export function getTimestamp(): string {
@@ -103,7 +107,7 @@ export function getTimestamp(): string {
 	return `${d}/${m}/${y}, ${time}`
 }
 
-export function ReplyToAgent(replyToken: string, msg: string) {
+export async function ReplyToAgent(replyToken: string, msg: string) {
 	const messages: ITextArray = [{ text: msg, type: 'text' }]
 
 	const body = { messages, replyToken }
@@ -113,5 +117,13 @@ export function ReplyToAgent(replyToken: string, msg: string) {
 		'Content-Type': 'application/json',
 	}
 
-	axios.post('https://api.line.me/v2/bot/message/reply', body, { headers })
+	console.log(JSON.stringify([body, { headers }], null, 3))
+
+	try {
+		await axios.post('https://api.line.me/v2/bot/message/reply/', body, {
+			headers,
+		})
+	} catch (e) {
+		console.log(`ERR#ReplyToAgent@AXIOS: ${e}`)
+	}
 }

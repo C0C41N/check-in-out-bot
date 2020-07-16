@@ -9,8 +9,6 @@ export async function exe(req: Request, res: Response) {
 		const { userId } = e.source
 		const { text } = e.message
 
-		console.log({ type, userId })
-
 		if (type === 'message') {
 			const textL = text.toLowerCase()
 

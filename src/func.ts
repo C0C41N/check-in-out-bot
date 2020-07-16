@@ -103,7 +103,7 @@ export async function checkOut(
 	// Exe
 	await Promise.all([
 		// Send Form Response
-		axios.get(CheckOutFormURL(username, check[1])),
+		axios.get(CheckOutFormURL(username, check[1].toString())),
 
 		// Set checkIn to false in db
 		db.ref(`agents/${username}`).update({ checkIn: false }),

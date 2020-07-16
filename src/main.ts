@@ -1,15 +1,15 @@
 import { checkIn, checkOut } from './func'
-import { IDirectText, Request, Response } from './types'
+import { IGroupText, Request, Response } from './types'
 
 export async function exe(req: Request, res: Response) {
-	const body: IDirectText = JSON.parse(req.body.toString().replace(/\\/g, ''))
+	const body: IGroupText = JSON.parse(req.body.toString().replace(/\\/g, ''))
 
 	body.events.forEach(async e => {
 		const { replyToken, type } = e
-		const { userId } = e.source
+		const { userId, type: srcType } = e.source
 		const { text, type: msgType } = e.message
 
-		if (type === 'message' && msgType === 'text') {
+		if (type === 'message' && msgType === 'text' && srcType === 'group') {
 			const textL = text.toLowerCase()
 
 			const hasCheckIn: boolean = textL.includes('#checkin')

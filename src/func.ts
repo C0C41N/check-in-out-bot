@@ -123,11 +123,6 @@ export function getTimestamp(): string {
 	const now = new Date().toLocaleString('en-GB', options)
 
 	return now
-
-	// const [date, time] = now.split(', ')
-	// const [m, d, y] = date.split('/')
-
-	// return `${d}/${m}/${y}, ${time}`
 }
 
 export async function replyToAgent(replyToken: string, msg: string) {

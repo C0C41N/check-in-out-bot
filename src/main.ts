@@ -7,9 +7,9 @@ export async function exe(req: Request, res: Response) {
 	body.events.forEach(async e => {
 		const { replyToken, type } = e
 		const { userId } = e.source
-		const { text } = e.message
+		const { text, type: msgType } = e.message
 
-		if (type === 'message') {
+		if (type === 'message' && msgType === 'text') {
 			const textL = text.toLowerCase()
 
 			const hasCheckIn: boolean = textL.includes('#checkin')

@@ -42,6 +42,17 @@ export async function ToCheckIn(
 	// Get Timestamp
 	const timestamp = getTimestamp()
 
+	// Check if agent is already CheckedIn
+	const check = await AlreadyCheckedIn(username)
+	if (check[0] === true) {
+		// Send reply
+		const tmp = `${username}, You already Checked-In @ ${check[1]}`
+		await ReplyToAgent(replyToken, tmp)
+
+		// End
+		if (end) res.end(tmp)
+	}
+
 	// Add user to db
 	await AddCheckIn(username, timestamp)
 
@@ -50,7 +61,7 @@ export async function ToCheckIn(
 	await ReplyToAgent(replyToken, msg)
 
 	// End
-	if (end) res.end(`${username} checkedIn!`)
+	if (end) res.end(msg)
 }
 
 export async function AddCheckIn(username: string, timestamp: string) {
@@ -117,8 +128,6 @@ export async function ReplyToAgent(replyToken: string, msg: string) {
 		'Content-Type': 'application/json',
 	}
 
-	console.log(JSON.stringify([body, { headers }], null, 3))
-
 	try {
 		await axios.post('https://api.line.me/v2/bot/message/reply/', body, {
 			headers,
@@ -126,4 +135,11 @@ export async function ReplyToAgent(replyToken: string, msg: string) {
 	} catch (e) {
 		console.log(`ERR#ReplyToAgent@AXIOS: ${e}`)
 	}
+}
+
+export async function AlreadyCheckedIn(username: string) {
+	const { checkIn, timestamp } = (
+		await db.ref(`agents/${username}`).once('value')
+	).val()
+	return [checkIn, timestamp]
 }

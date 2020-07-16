@@ -51,6 +51,7 @@ export async function ToCheckIn(
 
 		// End
 		if (end) res.end(tmp)
+		return
 	}
 
 	// Add user to db

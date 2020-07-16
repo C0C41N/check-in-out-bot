@@ -45,3 +45,10 @@ export interface IDirectText {
 	]
 	destination: string
 }
+
+export interface IUserProfile {
+	displayName: string
+	userId: string
+	pictureUrl: string
+	statusMessage?: string
+}

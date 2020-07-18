@@ -1,6 +1,5 @@
 import { checkIn } from '../src/func/checkIn'
 import { checkOut } from '../src/func/checkOut'
-import { replyUrl } from './ts/const'
 import { IGroupText, Request, Response } from './ts/types'
 
 export async function exe(req: Request, res: Response) {
@@ -28,7 +27,7 @@ export async function exe(req: Request, res: Response) {
 			const hasCheckIn: boolean = text.toLowerCase().includes('#checkin')
 			const hasCheckOut: boolean = text.toLowerCase().includes('#checkout')
 
-			if (hasCheckIn) checkIn(userId, groupId, res, replyUrl)
+			if (hasCheckIn) checkIn(userId, groupId, res, replyToken)
 			else if (hasCheckOut) checkOut(userId, groupId, res, replyToken)
 			else res.end(`\n\nIgnored..\n\n`)
 		} else {

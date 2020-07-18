@@ -1,5 +1,5 @@
 import { checkIn, checkOut } from './func'
-import { IGroupText, Request, Response } from './types'
+import { IGroupText, Request, Response } from './ts/types'
 
 export async function exe(req: Request, res: Response) {
 	const body: IGroupText = JSON.parse(req.body.toString().replace(/\\/g, ''))

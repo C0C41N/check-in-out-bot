@@ -2,7 +2,7 @@ import * as express from 'express'
 import * as serverless from 'serverless-http'
 
 import { exe } from './main'
-import { Request, Response } from './types'
+import { Request, Response } from './ts/types'
 
 const app = express()
 

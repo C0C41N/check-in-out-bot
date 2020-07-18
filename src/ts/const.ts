@@ -11,3 +11,8 @@ export const CheckOutFormURL = (username: string, timestamp: string) =>
 	'https://docs.google.com/forms/d/e/1FAIpQLSf_QE4O7Ke6A9V76epEXwWFY53BQ-qcNPxz7J7S2gukvYemIA/formResponse?entry.1781702975=#USERNAME&entry.12615492=#TIMESTAMP'
 		.replace('#USERNAME', username)
 		.replace('#TIMESTAMP', timestamp)
+
+export const scopes = [
+	'https://www.googleapis.com/auth/drive',
+	'https://www.googleapis.com/auth/spreadsheets',
+]

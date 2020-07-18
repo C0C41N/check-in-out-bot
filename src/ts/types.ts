@@ -3,6 +3,8 @@ import * as express from 'express'
 export type Request = express.Request
 export type Response = express.Response
 
+export type ITextArray = IText[]
+
 export interface IGroupText {
 	events: [
 		{
@@ -58,4 +60,15 @@ export interface IText {
 	text: string
 }
 
-export type ITextArray = IText[]
+export interface ISvcKey {
+	type: string
+	project_id: string
+	private_key_id: string
+	private_key: string
+	client_email: string
+	client_id: string
+	auth_uri: string
+	token_uri: string
+	auth_provider_x509_cert_url: string
+	client_x509_cert_url: string
+}

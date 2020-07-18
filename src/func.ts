@@ -1,8 +1,8 @@
 import axios from 'axios'
 
-import { CAT, CheckInFormURL, CheckOutFormURL } from './const'
-import { db } from './db'
-import { ITextArray, IUserProfile, Response } from './types'
+import { db } from './api'
+import { CAT, CheckInFormURL, CheckOutFormURL } from './ts/const'
+import { ITextArray, IUserProfile, Response } from './ts/types'
 
 export async function getProfile(
 	userId: string

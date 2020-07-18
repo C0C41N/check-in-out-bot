@@ -10,16 +10,24 @@ if (!admin.apps.length) {
 	})
 }
 
-const Auth = new google.auth.JWT(
-	svcKey.client_email,
-	undefined,
-	svcKey.private_key,
-	scopes
-)
-
-const auth = JSON.stringify(Auth)
-
-export const drive = google.drive({ version: 'v3', auth })
-export const sheets = google.sheets({ version: 'v4', auth })
-
 export const db = admin.database()
+
+let client: any = false
+
+export async function getClient() {
+	const { client_email, private_key } = svcKey
+	const credentials = { client_email, private_key }
+	client = await google.auth.getClient({ credentials, scopes })
+	console.log(`\n\ngetClient Ok.\n\n`)
+	console.log(`\n\n${JSON.stringify(client, null, 3)}\n\n`)
+}
+
+export async function getDrive() {
+	if (client === false) await getClient()
+	return google.drive({ version: 'v3', auth: client })
+}
+
+export async function getSheets() {
+	if (client === false) await getClient()
+	return google.sheets({ version: 'v4', auth: client })
+}

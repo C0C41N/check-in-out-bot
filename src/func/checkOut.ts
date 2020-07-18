@@ -18,11 +18,15 @@ export async function checkOut(
 	if (!profile) return
 	const username = profile.displayName
 
+	const timestamp = getTimestamp()
+
 	const agent = await getAgentDB(username)
 
 	const msg = agent.checkIn
-		? `${username}, Check-Out successful @ ${getTimestamp()}`
+		? `${username}, Check-Out successful @ ${timestamp}`
 		: `${username}, You aren't Checked-In.`
+
+	await replyToAgent(replyToken, msg)
 
 	if (agent.checkIn) {
 		await Promise.all([
@@ -31,6 +35,5 @@ export async function checkOut(
 		])
 	}
 
-	await replyToAgent(replyToken, msg)
 	res.end(msg)
 }

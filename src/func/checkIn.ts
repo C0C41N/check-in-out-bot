@@ -26,6 +26,8 @@ export async function checkIn(
 		? `${username}, You already Checked-In @ ${agent.timestamp}`
 		: `${username}, Check-In successful @ ${timestamp}`
 
+	await replyToAgent(replyToken, msg)
+
 	if (!agent.checkIn) {
 		await Promise.all([
 			axios.get(checkInFormURL(username)),
@@ -33,6 +35,5 @@ export async function checkIn(
 		])
 	}
 
-	await replyToAgent(replyToken, msg)
 	res.end(msg)
 }

@@ -1,29 +1,38 @@
-import { checkIn, checkOut } from './func'
+import { checkIn } from '../src/func/checkIn'
+import { checkOut } from '../src/func/checkOut'
+import { replyUrl } from './ts/const'
 import { IGroupText, Request, Response } from './ts/types'
 
 export async function exe(req: Request, res: Response) {
-	const body: IGroupText = JSON.parse(req.body.toString().replace(/\\/g, ''))
+	const parseBody = () => {
+		try {
+			return JSON.parse(req.body.toString().replace(/\\/g, ''))
+		} catch (err) {
+			res.end(
+				`\n\nParsing Error @ parseBody # main.ts\n\nbody:\n\n${req.body}\n\n`
+			)
+			return false
+		}
+	}
+
+	const body: IGroupText = parseBody()
+
+	if (!body) return
 
 	body.events.forEach(async e => {
 		const { replyToken, type } = e
-		const { userId, type: srcType } = e.source
+		const { groupId, userId, type: srcType } = e.source
 		const { text, type: msgType } = e.message
 
-		if (type === 'message' && msgType === 'text' && srcType === 'group') {
-			const textL = text.toLowerCase()
+		if (type === 'message' && srcType === 'group' && msgType === 'text') {
+			const hasCheckIn: boolean = text.toLowerCase().includes('#checkin')
+			const hasCheckOut: boolean = text.toLowerCase().includes('#checkout')
 
-			const hasCheckIn: boolean = textL.includes('#checkin')
-			const hasCheckOut: boolean = textL.includes('#checkout')
-
-			if (hasCheckIn) {
-				checkIn(userId, res, replyToken, true)
-			} else if (hasCheckOut) {
-				checkOut(userId, res, replyToken, true)
-			} else {
-				res.end('TRR#000')
-			}
+			if (hasCheckIn) checkIn(userId, groupId, res, replyUrl)
+			else if (hasCheckOut) checkOut(userId, groupId, res, replyToken)
+			else res.end(`\n\nIgnored..\n\n`)
 		} else {
-			res.end('TRR#001')
+			res.end(`\n\nInvalid event @ exe # main.ts\n\n`)
 		}
 	})
 }

@@ -9,7 +9,7 @@ const readCredentials = () => {
 	try {
 		return readFileSync('../json/svckey.json')
 	} catch (err) {
-		throw new Error(`Error loading svcKey, ErrCode: ${err.code}`)
+		throw new Error(`\n\nError loading svcKey, ErrCode: ${err.code}\n\n`)
 	}
 }
 

@@ -8,7 +8,7 @@ const app = express()
 
 app.post('/.netlify/functions/main', (req: Request, res: Response) => {
 	exe(req, res).catch(e => {
-		console.log('ERR#000', e)
+		res.end(`\n\n@ app.post # index.ts\nErr:\n${JSON.stringify(e, null, 3)}\n\n`)
 	})
 })
 

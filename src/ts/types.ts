@@ -55,6 +55,8 @@ export interface IUserProfile {
 	statusMessage?: string
 }
 
+export type UserProfile = Promise<IUserProfile | undefined>
+
 export interface IText {
 	type: 'text'
 	text: string

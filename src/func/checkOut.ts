@@ -14,43 +14,23 @@ export async function checkOut(
 	res: Response,
 	replyToken: string
 ) {
-	// Get DisplayName
-	let username: string
-
 	const profile = await getProfile(userId, groupId)
+	if (!profile) return
+	const username = profile.displayName
 
-	if (profile) {
-		username = profile.displayName
-	} else {
-		console.log('ERR#ToCheckOut_001')
-		return
+	const agent = await getAgentDB(username)
+
+	const msg = agent.checkIn
+		? `${username}, Check-Out successful @ ${getTimestamp()}`
+		: `${username}, You aren't Checked-In.`
+
+	if (agent.checkIn) {
+		await Promise.all([
+			axios.get(checkOutFormURL(username, agent.timestamp.toString())),
+			db.ref(`agents/${username}`).update({ checkIn: false }),
+		])
 	}
 
-	// Check if agent is already checked out
-	const check = await getAgentDB(username)
-	if (check[0] === false) {
-		// Send reply
-		const tmp = `${username}, You aren't Checked-In.`
-		await replyToAgent(replyToken, tmp)
-
-		// End
-		res.end(tmp)
-		return
-	}
-
-	// Exe
-	await Promise.all([
-		// Send Form Response
-		axios.get(checkOutFormURL(username, check[1].toString())),
-
-		// Set checkIn to false in db
-		db.ref(`agents/${username}`).update({ checkIn: false }),
-	])
-
-	// Send reply
-	const msg = `${username}, Check-Out successful @ ${getTimestamp()}`
 	await replyToAgent(replyToken, msg)
-
-	// End
 	res.end(msg)
 }

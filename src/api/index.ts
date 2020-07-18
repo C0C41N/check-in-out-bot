@@ -7,7 +7,7 @@ import { ISvcKey } from '../ts/types'
 
 const readCredentials = () => {
 	try {
-		return readFileSync('../json/svckey.json')
+		return readFileSync('./src/json/svckey.json')
 	} catch (err) {
 		throw new Error(`\n\nError loading svcKey, ErrCode: ${err.code}\n\n`)
 	}
@@ -22,12 +22,14 @@ if (!admin.apps.length) {
 	})
 }
 
-const auth = new google.auth.JWT(
+const Auth = new google.auth.JWT(
 	credentials.client_email,
 	undefined,
 	credentials.private_key,
 	scopes
 )
+
+const auth = JSON.stringify(Auth)
 
 export const drive = google.drive({ version: 'v3', auth })
 export const sheets = google.sheets({ version: 'v4', auth })

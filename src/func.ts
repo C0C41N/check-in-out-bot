@@ -84,7 +84,7 @@ export async function checkOut(
 	if (profile) {
 		username = profile.displayName
 	} else {
-		console.log('ERR#ToCheckIn_001')
+		console.log('ERR#ToCheckOut_001')
 		return
 	}
 

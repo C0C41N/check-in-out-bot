@@ -14,13 +14,13 @@ export async function checkIn(
 	res: Response,
 	replyToken: string
 ) {
-	const profile = await getProfile(userId, groupId) // Get DisplayName
+	const profile = await getProfile(userId, groupId)
 	if (!profile) return
 	const username = profile.displayName
 
-	const timestamp = getTimestamp() // Get Timestamp
+	const timestamp = getTimestamp()
 
-	const agent = await getAgentDB(username) // Check CheckedIn status
+	const agent = await getAgentDB(username)
 
 	const msg = agent.checkIn
 		? `${username}, You already Checked-In @ ${agent.timestamp}`
@@ -34,5 +34,5 @@ export async function checkIn(
 	}
 
 	await replyToAgent(replyToken, msg)
-	res.end(msg) // End
+	res.end(msg)
 }

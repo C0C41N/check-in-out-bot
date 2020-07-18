@@ -9,7 +9,7 @@ export async function getProfile(userId: string, groupId: string): UserProfile {
 		const res = await axios.get(grpMProfUrl(userId, groupId), { headers })
 		return res.data
 	} catch (e) {
-		console.log(`\n\n@ getProfile\n\nErr:\n\n${JSON.stringify(e, null, 3)}`)
+		console.log(`\n\n@ getProfile\n\n${JSON.stringify(e, null, 3)}`)
 		return undefined
 	}
 }

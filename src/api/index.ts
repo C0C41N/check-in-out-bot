@@ -1,31 +1,19 @@
 import * as admin from 'firebase-admin'
-import { readFileSync } from 'fs'
 import { google } from 'googleapis'
 
-import { scopes } from '../ts/const'
-import { ISvcKey } from '../ts/types'
-
-const readCredentials = () => {
-	try {
-		return readFileSync('./src/json/svckey.json')
-	} catch (err) {
-		throw new Error(`\n\nError loading svcKey, ErrCode: ${err.code}\n\n`)
-	}
-}
-
-const credentials: ISvcKey = JSON.parse(readCredentials().toString())
+import { scopes, svcKey } from '../ts/const'
 
 if (!admin.apps.length) {
 	admin.initializeApp({
-		credential: admin.credential.cert(credentials as admin.ServiceAccount),
+		credential: admin.credential.cert(svcKey as admin.ServiceAccount),
 		databaseURL: 'https://check-in-out-1595002135072.firebaseio.com/',
 	})
 }
 
 const Auth = new google.auth.JWT(
-	credentials.client_email,
+	svcKey.client_email,
 	undefined,
-	credentials.private_key,
+	svcKey.private_key,
 	scopes
 )
 

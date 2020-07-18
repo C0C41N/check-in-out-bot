@@ -14,6 +14,6 @@ export async function replyToAgent(replyToken: string, msg: string) {
 	try {
 		await axios.post(replyUrl, body, { headers })
 	} catch (e) {
-		console.log(`\n\n@ replyToAgent\n\nErr:\n\n${e}\n\n`)
+		console.log(`\n\n@ replyToAgent\n\n${e}\n\n`)
 	}
 }

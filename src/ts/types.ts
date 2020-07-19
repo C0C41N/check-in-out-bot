@@ -74,12 +74,15 @@ export interface IDriveCreateResp {
 }
 
 export interface ISheetAppendResp {
-	spreadsheetId: string
-	updates: {
+	data: {
 		spreadsheetId: string
-		updatedRange: string
-		updatedRows: number
-		updatedColumns: number
-		updatedCells: number
+		tableRange: string
+		updates: {
+			spreadsheetId: string
+			updatedRange: string
+			updatedRows: number
+			updatedColumns: number
+			updatedCells: number
+		}
 	}
 }

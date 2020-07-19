@@ -10,12 +10,17 @@ export async function checkDriveStructure(date: string) {
 
 	// prettier-ignore
 	if (info.year.id === false || info.year.value < +year) {
+
 		await createYear(year, month, day)
 	}
+
 	else if (info.month.id === false || info.month.value < +month) {
+
 		await createMonth(month, day, info.year.id as string)
 	}
+
 	else if (info.day.id === false || info.day.value < +day) {
+
 		info.day.id = await createTempSheet(day, info.month.id as string)
 	}
 

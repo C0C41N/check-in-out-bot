@@ -1,3 +1,12 @@
-const options = { hour12: false, timeZone: 'Asia/Bangkok' }
+import * as moment from 'moment-timezone'
 
-export const getTimestamp = () => new Date().toLocaleString('en-GB', options)
+export interface ITimestamp {
+	date: string
+	time: string
+}
+
+export function getTimestamp(): ITimestamp {
+	const date = moment().tz('Asia/Bangkok').locale('th').format('l')
+	const time = moment().tz('Asia/Bangkok').locale('th').format('LT')
+	return { date, time }
+}

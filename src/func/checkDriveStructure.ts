@@ -16,8 +16,10 @@ export async function checkDriveStructure(date: string) {
 		await createMonth(month, day, info.year.id as string)
 	}
 	else if (info.day.id === false || info.day.value < +day) {
-		await createTempSheet(day, info.month.id as string)
+		info.day.id = await createTempSheet(day, info.month.id as string)
 	}
+
+	return info.day.id as string
 }
 
 export async function createYear(year: string, month: string, day: string) {
@@ -74,4 +76,6 @@ export async function createTempSheet(name: string, parentId: string) {
 	const DMY: IDMY = { id, value: +name }
 
 	db.ref('info/day').set(DMY)
+
+	return id
 }

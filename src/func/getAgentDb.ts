@@ -1,18 +1,14 @@
 import { db } from '../api'
 
-interface IAgentDB {
-	checkIn: boolean
-	timestamp: string
+export interface IAgentDB {
+	displayName: string | boolean
+	realName: string | boolean
+	sheetId: string | boolean
+	range: string | boolean
 }
 
-export async function getAgentDB(username: string): Promise<IAgentDB> {
-	const snap = await db.ref(`agents/${username}`).once('value')
-	if (!snap.exists()) {
-		return {
-			checkIn: false,
-			timestamp: '#NA',
-		}
-	}
-	const { checkIn, timestamp } = snap.val()
-	return { checkIn, timestamp }
+export async function getAgentDB(userId: string): Promise<IAgentDB | false> {
+	const snap = await db.ref(`agents/${userId}`).once('value')
+	if (!snap.exists()) return false
+	return snap.val()
 }

@@ -48,15 +48,6 @@ export interface IDirectText {
 	destination: string
 }
 
-export interface IUserProfile {
-	displayName: string
-	userId: string
-	pictureUrl: string
-	statusMessage?: string
-}
-
-export type UserProfile = Promise<IUserProfile | undefined>
-
 export interface IText {
 	type: 'text'
 	text: string

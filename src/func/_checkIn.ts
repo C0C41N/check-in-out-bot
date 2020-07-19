@@ -19,4 +19,21 @@
 	---|---|---|--- Make Folders and/or File
 	*/
 
-export async function checkIn() {}
+import { getAgentDB } from './getAgentDb'
+import { getProfile } from './getProfile'
+
+// prettier-ignore
+export async function checkIn(userId: string, groupId: string) {
+
+	const profile = await getProfile(userId, groupId)
+
+	if (profile === false) return
+
+	const { displayName } = profile
+
+	const agent = await getAgentDB(userId)
+
+	if (agent === false) {
+		
+	}
+}

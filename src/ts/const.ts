@@ -45,3 +45,19 @@ export const grpMProfUrl = (userId: string, groupId: string) =>
 		.replace('{groupId}', groupId)
 
 export const replyUrl = 'https://api.line.me/v2/bot/message/reply'
+
+export const getMonthString = (month: number) =>
+	[
+		'January',
+		'February',
+		'March',
+		'April',
+		'May',
+		'June',
+		'July',
+		'August',
+		'September',
+		'October',
+		'November',
+		'December',
+	][month - 1]

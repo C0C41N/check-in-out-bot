@@ -63,16 +63,21 @@ export interface IText {
 }
 
 export interface IInfo {
-	day: {
-		id: boolean | string
-		value: number
-	}
-	month: {
-		id: boolean | string
-		value: number
-	}
-	year: {
-		id: boolean | string
-		value: number
+	day: IDMY
+	month: IDMY
+	year: IDMY
+}
+
+export interface IDMY {
+	id: boolean | string
+	value: number
+}
+
+export interface IDriveCreateResp {
+	data: {
+		kind: 'drive#file'
+		id: string
+		name: string
+		mimeType: 'application/vnd.google-apps.folder'
 	}
 }

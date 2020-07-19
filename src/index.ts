@@ -1,11 +1,8 @@
 import * as express from 'express'
 import * as serverless from 'serverless-http'
 
-import { getClient } from './api'
 import { exe } from './main'
 import { Request, Response } from './ts/types'
-
-getClient()
 
 const app = express()
 

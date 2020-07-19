@@ -61,3 +61,18 @@ export interface IText {
 	type: 'text'
 	text: string
 }
+
+export interface IInfo {
+	day: {
+		id: boolean | string
+		value: number
+	}
+	month: {
+		id: boolean | string
+		value: number
+	}
+	year: {
+		id: boolean | string
+		value: number
+	}
+}

@@ -19,7 +19,6 @@ export async function getClient() {
 	const credentials = { client_email, private_key }
 	client = await google.auth.getClient({ credentials, scopes })
 	console.log(`\n\ngetClient Ok.\n\n`)
-	console.log(`\n\n${JSON.stringify(client, null, 3)}\n\n`)
 }
 
 export async function getDrive() {

@@ -21,7 +21,7 @@ export async function checkIn(userId: string, groupId: string, replyToken: strin
 
 			const { displayName } = await profile()
 
-			replyToAgent(replyToken, `${displayName},\n\nYou're already Checked In.`)
+			await replyToAgent(replyToken, `${displayName},\n\nYou're already Checked In.`)
 		}
 
 		else {
@@ -35,7 +35,7 @@ export async function checkIn(userId: string, groupId: string, replyToken: strin
 
 		const { displayName } = await profile()
 
-		replyToAgent(replyToken, [
+		await replyToAgent(replyToken, [
 			`Check-In successful!\n`,
 			`Name: ${displayName}`,
 			`Date: ${date}`,
@@ -59,7 +59,7 @@ export async function checkIn(userId: string, groupId: string, replyToken: strin
 
 		const Agent: IAgentDB = { displayName, range, sheetId }
 
-		db.ref(`agents/${userId}`).update(Agent)
+		await db.ref(`agents/${userId}`).update(Agent)
 	}
 
 	async function profile() {

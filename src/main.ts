@@ -35,7 +35,7 @@ export async function exe(req: Request, res: Response) {
 
 			if (hasCheckIn) {
 
-				checkIn(userId, groupId, replyToken)
+				await checkIn(userId, groupId, replyToken)
 			}
 
 			else if (hasCheckOut) {
@@ -55,4 +55,6 @@ export async function exe(req: Request, res: Response) {
 			res.end(`\n\nInvalid event @ exe # main.ts\n\n`)
 		}
 	})
+
+	res.end('Ok.')
 }

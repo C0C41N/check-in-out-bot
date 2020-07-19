@@ -2,26 +2,26 @@ import { db, getDrive } from '../api'
 import { getMonthString, parentFolderId, tempId } from '../ts/const'
 import { IDMY, IDriveCreateResp, IInfo } from '../ts/types'
 
+// prettier-ignore
 export async function checkDriveStructure(date: string) {
 	const [day, month, year] = date.split('/')
 
 	const snap = await db.ref('info').once('value')
 	const info: IInfo = snap.val()
 
-	// prettier-ignore
 	if (info.year.id === false || info.year.value < +year) {
 
-		await createYear(year, month, day)
+		return await createYear(year, month, day)
 	}
 
-	else if (info.month.id === false || info.month.value < +month) {
+	if (info.month.id === false || info.month.value < +month) {
 
-		await createMonth(month, day, info.year.id as string)
+		return await createMonth(month, day, info.year.id as string)
 	}
 
-	else if (info.day.id === false || info.day.value < +day) {
+	if (info.day.id === false || info.day.value < +day) {
 
-		info.day.id = await createTempSheet(day, info.month.id as string)
+		return await createTempSheet(day, info.month.id as string)
 	}
 
 	return info.day.id as string
@@ -41,9 +41,9 @@ export async function createYear(year: string, month: string, day: string) {
 
 	const DMY: IDMY = { id, value: +year }
 
-	db.ref('info/year').set(DMY)
+	await db.ref('info/year').set(DMY)
 
-	createMonth(month, day, id)
+	return createMonth(month, day, id)
 }
 
 export async function createMonth(
@@ -64,9 +64,9 @@ export async function createMonth(
 
 	const DMY: IDMY = { id, value: +month }
 
-	db.ref('info/month').set(DMY)
+	await db.ref('info/month').set(DMY)
 
-	createTempSheet(day, id)
+	return createTempSheet(day, id)
 }
 
 export async function createTempSheet(name: string, parentId: string) {
@@ -80,7 +80,7 @@ export async function createTempSheet(name: string, parentId: string) {
 
 	const DMY: IDMY = { id, value: +name }
 
-	db.ref('info/day').set(DMY)
+	await db.ref('info/day').set(DMY)
 
 	return id
 }

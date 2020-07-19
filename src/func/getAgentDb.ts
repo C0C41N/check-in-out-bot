@@ -2,7 +2,7 @@ import { db } from '../api'
 
 export interface IAgentDB {
 	displayName: string | boolean
-	realName: string | boolean
+	realName?: string | boolean
 	sheetId: string | boolean
 	range: string | boolean
 }

@@ -72,3 +72,14 @@ export interface IDriveCreateResp {
 		mimeType: 'application/vnd.google-apps.folder'
 	}
 }
+
+export interface ISheetAppendResp {
+	spreadsheetId: string
+	updates: {
+		spreadsheetId: string
+		updatedRange: string
+		updatedRows: number
+		updatedColumns: number
+		updatedCells: number
+	}
+}

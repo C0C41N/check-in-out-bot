@@ -7,7 +7,8 @@
 	---|---|--- Store TimeStamp
 	---|---|--- ReplyToAgent: Check IN
 	---|---|--- CheckFilesFolders()
-	---|---|--- Check IN
+	---|---|--- Enter Data in sheet
+	---|---|--- Enter Data in DB
 	---|---Else
 	---|---|--- ReplyToAgent: Already CheckedIN
 
@@ -19,9 +20,10 @@
 	---|---|---|--- Make Folders and/or File
 	*/
 
-import { getSheets } from '../api'
+import { db, getSheets } from '../api'
+import { ISheetAppendResp } from '../ts/types'
 import { checkDriveStructure } from './checkDriveStructure'
-import { getAgentDB } from './getAgentDb'
+import { getAgentDB, IAgentDB } from './getAgentDb'
 import { getProfile, IUserProfile } from './getProfile'
 import { getTimestamp } from './getTimestamp'
 import { replyToAgent } from './replyToAgent'
@@ -29,7 +31,6 @@ import { replyToAgent } from './replyToAgent'
 // prettier-ignore
 export async function checkIn(userId: string, groupId: string, replyToken: string) {
 
-	let profile: IUserProfile
 	const agent = await getAgentDB(userId)
 
 	if (agent === false) {
@@ -40,7 +41,7 @@ export async function checkIn(userId: string, groupId: string, replyToken: strin
 
 		if (agent.sheetId) {
 
-			const { displayName } = await Profile()
+			const { displayName } = await profile()
 
 			replyToAgent(replyToken, `${displayName},\n\nYou're already Checked In.`)
 		}
@@ -54,7 +55,7 @@ export async function checkIn(userId: string, groupId: string, replyToken: strin
 
 		const { date, time } = getTimestamp()
 
-		const { displayName } = await Profile()
+		const { displayName } = await profile()
 
 		replyToAgent(replyToken, [
 			`Check-In successful!\n`,
@@ -64,15 +65,26 @@ export async function checkIn(userId: string, groupId: string, replyToken: strin
 		].join('\n'))
 
 		const sheetId = await checkDriveStructure(date)
+		const sheets = await getSheets()
+		const name = agent && agent.realName ? agent.realName : displayName
 
-		const drive = await getSheets()
+		const resp: ISheetAppendResp = await sheets.spreadsheets.values.append({
+			range: 'main!B8:F8',
+			requestBody: {
+				values: [[date, name, time]],
+			},
+			spreadsheetId: sheetId,
+			valueInputOption: 'USER_ENTERED',
+		})
+
+		const { updatedRange: range } = resp.updates
+
+		const Agent: IAgentDB = { displayName, range, sheetId }
+
+		db.ref(`agents/${userId}`).update(Agent)
 	}
 
-	async function Profile() {
-
-		if (profile) return profile
-
-		profile = await getProfile(userId, groupId) as IUserProfile
-		return profile
+	async function profile() {
+		return await getProfile(userId, groupId) as IUserProfile
 	}
 }

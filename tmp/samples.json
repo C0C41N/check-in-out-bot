@@ -8,11 +8,11 @@
 			"source": { "userId": "U9f7ee97be0ff6c9a95df0cec742665e0", "type": "user" },
 			"timestamp": 1594818172770,
 			"mode": "active",
-			"message": { "type": "text", "id": "12323910767475", "text": "Hi bitxh! " }
+			"message": { "type": "text", "id": "12323910767475", "text": "#rename 0ct41n = Ali" }
 		}
 	],
 	"destination": "U77d17337c30e7ab9c5139cf8f390c9be"
-},
+}
 // NERD GROUP TEXT - ME
 
 {
@@ -27,7 +27,7 @@
 			},
 			"timestamp": 1594818327554,
 			"mode": "active",
-			"message": { "type": "text", "id": "12323926261854", "text": "testing... " }
+			"message": { "type": "text", "id": "12323926261854", "text": "#checkin" }
 		}
 	],
 	"destination": "U77d17337c30e7ab9c5139cf8f390c9be"

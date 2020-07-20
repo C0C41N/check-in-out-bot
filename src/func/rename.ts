@@ -1,5 +1,6 @@
-import { db } from '../api'
+import { db, getSheets } from '../api'
 import { MyUserId } from '../ts/const'
+import { IAgentDB } from './getAgentDb'
 import { sendPushMsg } from './sendPushMsg'
 
 // prettier-ignore
@@ -25,7 +26,8 @@ export async function renameAgent(query: string) {
 
 	else {
 
-		const userId = Object.keys(snap.val())[0]
+		const val = snap.val()
+		const userId = Object.keys(val)[0]
 
 		await db.ref(`agents/${userId}`).update({ realName })
 
@@ -35,6 +37,26 @@ export async function renameAgent(query: string) {
 		].join('\n\n')
 
 		await sendPushMsg(MyUserId, msg)
+
+		const agent = Object.values(val)[0] as IAgentDB
+
+		const { range, sheetId } = agent
+
+		if (sheetId) {
+
+			const row = range.split(/[!:]/g)[1].slice(1)
+
+			const sheets = await getSheets()
+
+			await sheets.spreadsheets.values.update({
+				range: `main!C${row}`,
+				requestBody: {
+					values: [[ realName ]]
+				},
+				spreadsheetId: sheetId,
+				valueInputOption: 'USER_ENTERED'
+			})
+		}
 
 		return msg
 	}

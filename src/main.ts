@@ -1,4 +1,5 @@
 import { checkIn } from './func/checkIn'
+import { checkOut } from './func/checkOut'
 import { IGroupText, Request, Response } from './ts/types'
 
 // prettier-ignore
@@ -35,13 +36,12 @@ export async function exe(req: Request, res: Response) {
 
 			if (hasCheckIn) {
 
-				await checkIn(userId, groupId, replyToken)
-				res.end('Ok.')
+				res.end(await checkIn(userId, groupId, replyToken))
 			}
 
 			else if (hasCheckOut) {
 
-				console.log()
+				res.end(await checkOut(userId, groupId, replyToken))
 			}
 
 			else {

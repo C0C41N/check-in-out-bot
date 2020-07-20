@@ -12,7 +12,7 @@ export async function checkIn(userId: string, groupId: string, replyToken: strin
 	const agent = await getAgentDB(userId)
 
 	if (agent === false) {
-		await doCheckIn()
+		return await doCheckIn()
 	}
 
 	else {
@@ -21,11 +21,15 @@ export async function checkIn(userId: string, groupId: string, replyToken: strin
 
 			const { displayName } = await profile()
 
-			await replyToAgent(replyToken, `${displayName},\n\nYou're already Checked In.`)
+			const msg = `${displayName},\n\nYou're already Checked In.`
+
+			await replyToAgent(replyToken, msg)
+
+			return msg
 		}
 
 		else {
-			await doCheckIn()
+			return await doCheckIn()
 		}
 	}
 
@@ -35,12 +39,14 @@ export async function checkIn(userId: string, groupId: string, replyToken: strin
 
 		const { displayName } = await profile()
 
-		await replyToAgent(replyToken, [
+		const msg = [
 			`Check-In successful!\n`,
 			`Name: ${displayName}`,
 			`Date: ${date}`,
 			`Time: ${time}`
-		].join('\n'))
+		].join('\n')
+
+		await replyToAgent(replyToken, msg)
 
 		const sheetId = await checkDriveStructure(date)
 		const sheets = await getSheets()
@@ -49,7 +55,7 @@ export async function checkIn(userId: string, groupId: string, replyToken: strin
 		const resp = await sheets.spreadsheets.values.append({
 			range: 'main!B8:F8',
 			requestBody: {
-				values: [[date, name, time]],
+				values: [[ date, name, time ]],
 			},
 			spreadsheetId: sheetId,
 			valueInputOption: 'USER_ENTERED',
@@ -60,6 +66,8 @@ export async function checkIn(userId: string, groupId: string, replyToken: strin
 		const Agent: IAgentDB = { displayName, range, sheetId }
 
 		await db.ref(`agents/${userId}`).update(Agent)
+
+		return msg
 	}
 
 	async function profile() {

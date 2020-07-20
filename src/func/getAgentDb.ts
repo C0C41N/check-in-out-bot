@@ -1,10 +1,10 @@
 import { db } from '../api'
 
 export interface IAgentDB {
-	displayName: string | boolean
-	realName?: string | boolean
-	sheetId: string | boolean
-	range: string | boolean
+	displayName: string
+	realName?: string | false
+	sheetId: string | false
+	range: string
 }
 
 export async function getAgentDB(userId: string): Promise<IAgentDB | false> {

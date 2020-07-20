@@ -1,18 +1,3 @@
-/*
---- Check If Agent Exists
---- If does'nt
----|--- ReplyToAgent: Not Checked IN
---- If does
----|--- Check SheetId
----|---|--- If false
----|---|---|--- ReplyToAgent: Not Checked IN
----|---|--- If id
----|---|---|--- Store Timestamp
----|---|---|--- ReplyToAgent: Check-Out Successful
----|---|---|--- Enter in Sheet (specific range)
----|---|---|--- set sheetId to false
-*/
-
 import { db, getSheets } from '../api'
 import { getAgentDB } from './getAgentDb'
 import { getProfile, IUserProfile } from './getProfile'

@@ -1,6 +1,8 @@
 import { checkIn } from './func/checkIn'
 import { checkOut } from './func/checkOut'
-import { IGroupText, Request, Response } from './ts/types'
+import { renameAgent } from './func/rename'
+import { MyUserId } from './ts/const'
+import { IDirectText, Request, Response } from './ts/types'
 
 // prettier-ignore
 export async function exe(req: Request, res: Response) {
@@ -19,7 +21,7 @@ export async function exe(req: Request, res: Response) {
 		}
 	}
 
-	const body: IGroupText = parseBody()
+	const body: IDirectText = parseBody()
 
 	if (!body) return
 
@@ -31,8 +33,8 @@ export async function exe(req: Request, res: Response) {
 
 		if (type === 'message' && srcType === 'group' && msgType === 'text') {
 
-			const hasCheckIn: boolean = text.toLowerCase().includes('#checkin')
-			const hasCheckOut: boolean = text.toLowerCase().includes('#checkout')
+			const hasCheckIn = text.toLowerCase().includes('#checkin')
+			const hasCheckOut = text.toLowerCase().includes('#checkout')
 
 			if (hasCheckIn) {
 
@@ -49,6 +51,21 @@ export async function exe(req: Request, res: Response) {
 				res.end(`\n\nIgnored..\n\n`)
 			}
 
+		}
+
+		else if (type === 'message' && srcType === 'user' && msgType === 'text') {
+
+			const hasRename = text.toLowerCase().includes('#rename')
+
+			if (hasRename && userId === MyUserId) {
+
+				res.end(await renameAgent(text))
+			}
+
+			else {
+
+				res.end(`\n\nIgnored..\n\n`)
+			}
 		}
 
 		else {

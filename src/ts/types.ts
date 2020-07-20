@@ -5,28 +5,6 @@ export type Response = express.Response
 
 export type ITextArray = IText[]
 
-export interface IGroupText {
-	events: [
-		{
-			type: 'message'
-			replyToken: string
-			source: {
-				userId: string
-				groupId: string
-				type: 'group'
-			}
-			timestamp: number
-			mode: 'active' | 'standby'
-			message: {
-				type: 'text'
-				id: string
-				text: string
-			}
-		}
-	]
-	destination: string
-}
-
 export interface IDirectText {
 	events: [
 		{
@@ -34,7 +12,8 @@ export interface IDirectText {
 			replyToken: string
 			source: {
 				userId: string
-				type: 'user'
+				groupId: string
+				type: 'user' | 'group'
 			}
 			timestamp: number
 			mode: 'active' | 'standby'

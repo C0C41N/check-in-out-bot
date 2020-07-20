@@ -1,10 +1,12 @@
 import { db, getSheets } from '../api'
+import { MyUserId } from '../ts/const'
 import { ISheetAppendResp } from '../ts/types'
 import { checkDriveStructure } from './checkDriveStructure'
 import { getAgentDB, IAgentDB } from './getAgentDb'
 import { getProfile, IUserProfile } from './getProfile'
 import { getTimestamp } from './getTimestamp'
 import { replyToAgent } from './replyToAgent'
+import { sendPushMsg } from './sendPushMsg'
 
 // prettier-ignore
 export async function checkIn(userId: string, groupId: string, replyToken: string) {
@@ -12,6 +14,7 @@ export async function checkIn(userId: string, groupId: string, replyToken: strin
 	const agent = await getAgentDB(userId)
 
 	if (agent === false) {
+
 		return await doCheckIn()
 	}
 
@@ -67,10 +70,21 @@ export async function checkIn(userId: string, groupId: string, replyToken: strin
 
 		await db.ref(`agents/${userId}`).update(Agent)
 
-		return msg
+		const msg2 = [
+			`Agent First-time Check-IN`,
+			`Name: ${displayName}`,
+			`Time: ${time}`,
+			`Please enter real name for this agent`,
+			`reply like this: #rename DISPLAYNAME = REAL NAME`,
+		].join('\n\n')
+
+		await sendPushMsg(MyUserId, msg2)
+
+		return `${msg}\n\n			---			\n\n${msg2}`
 	}
 
 	async function profile() {
+
 		return await getProfile(userId, groupId) as IUserProfile
 	}
 }

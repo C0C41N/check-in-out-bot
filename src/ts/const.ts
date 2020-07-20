@@ -19,21 +19,6 @@ export const svcKey = {
 	type: 'service_account',
 }
 
-// ---------------------------------------------------------------------------
-
-export const checkInFormURL = (username: string) =>
-	'https://docs.google.com/forms/d/e/1FAIpQLSd9riW_EgO_hO5gt_hb6BheQzUCLh7C93kyW7JtulLitdPckw/formResponse?entry.501517375=#USERNAME'.replace(
-		'#USERNAME',
-		username
-	)
-
-export const checkOutFormURL = (username: string, timestamp: string) =>
-	'https://docs.google.com/forms/d/e/1FAIpQLSf_QE4O7Ke6A9V76epEXwWFY53BQ-qcNPxz7J7S2gukvYemIA/formResponse?entry.1781702975=#USERNAME&entry.12615492=#TIMESTAMP'
-		.replace('#USERNAME', username)
-		.replace('#TIMESTAMP', timestamp)
-
-// ---------------------------------------------------------------------------
-
 export const scopes = [
 	'https://www.googleapis.com/auth/drive',
 	'https://www.googleapis.com/auth/spreadsheets',
@@ -45,6 +30,11 @@ export const grpMProfUrl = (userId: string, groupId: string) =>
 		.replace('{groupId}', groupId)
 
 export const replyUrl = 'https://api.line.me/v2/bot/message/reply'
+export const pushUrl = 'https://api.line.me/v2/bot/message/push'
+
+export const VUserId = 'U5aa429527ab243959208f2c46bf854f7'
+export const MUserId = 'U9f7ee97be0ff6c9a95df0cec742665e0'
+export const MyUserId = MUserId
 
 export const getMonthString = (month: number) =>
 	[

@@ -67,22 +67,27 @@ export async function checkIn(userId: string, groupId: string, replyToken: strin
 
 		const { updatedRange: range } = resp.data.updates
 
-		const handle = getRandomNumber(4)
+		const Agent: IAgentDB = { displayName, range, sheetId }
 
-		const Agent: IAgentDB = { displayName, range, sheetId, handle }
+		let msg2
+
+		if (!(agent && agent.handle)) {
+			const handle = getRandomNumber(4)
+			Agent.handle = handle
+
+			msg2 = [
+				`Agent First-time Check-IN\n`,
+				`Name: ${displayName}`,
+				`Time: ${time}\n`,
+				`HANDLE: ${handle}\n`,
+				`Please enter real name for this agent\n`,
+				`reply like this: #rename HANDLE = REAL NAME`,
+			].join('\n')
+
+			await sendPushMsg(MyUserId, msg2)
+		}
 
 		await db.ref(`agents/${userId}`).update(Agent)
-
-		const msg2 = [
-			`Agent First-time Check-IN\n`,
-			`Name: ${displayName}`,
-			`Time: ${time}\n`,
-			`HANDLE: ${handle}\n`,
-			`Please enter real name for this agent\n`,
-			`reply like this: #rename HANDLE = REAL NAME`,
-		].join('\n')
-
-		await sendPushMsg(MyUserId, msg2)
 
 		return `${msg}\n\n			---			\n\n${msg2}`
 	}

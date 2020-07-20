@@ -5,7 +5,7 @@ export interface IAgentDB {
 	realName?: string | false
 	sheetId: string | false
 	range: string
-	handle: string
+	handle?: string
 }
 
 export async function getAgentDB(userId: string): Promise<IAgentDB | false> {

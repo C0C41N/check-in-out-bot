@@ -33,7 +33,6 @@ export interface IText {
 }
 
 export interface IInfo {
-	day: IDMY
 	month: IDMY
 	year: IDMY
 }

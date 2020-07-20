@@ -34,7 +34,7 @@ export const pushUrl = 'https://api.line.me/v2/bot/message/push'
 
 export const VUserId = 'U5aa429527ab243959208f2c46bf854f7'
 export const MUserId = 'U9f7ee97be0ff6c9a95df0cec742665e0'
-export const MyUserId = MUserId
+export const MyUserId = VUserId
 
 export const getMonthString = (month: number) =>
 	[

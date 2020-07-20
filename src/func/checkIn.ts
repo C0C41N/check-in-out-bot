@@ -4,6 +4,7 @@ import { ISheetAppendResp } from '../ts/types'
 import { checkDriveStructure } from './checkDriveStructure'
 import { getAgentDB, IAgentDB } from './getAgentDb'
 import { getProfile, IUserProfile } from './getProfile'
+import { getRandomNumber } from './getRandomKey'
 import { getTimestamp } from './getTimestamp'
 import { replyToAgent } from './replyToAgent'
 import { sendPushMsg } from './sendPushMsg'
@@ -66,17 +67,20 @@ export async function checkIn(userId: string, groupId: string, replyToken: strin
 
 		const { updatedRange: range } = resp.data.updates
 
-		const Agent: IAgentDB = { displayName, range, sheetId }
+		const handle = getRandomNumber(4)
+
+		const Agent: IAgentDB = { displayName, range, sheetId, handle }
 
 		await db.ref(`agents/${userId}`).update(Agent)
 
 		const msg2 = [
-			`Agent First-time Check-IN`,
+			`Agent First-time Check-IN\n`,
 			`Name: ${displayName}`,
-			`Time: ${time}`,
-			`Please enter real name for this agent`,
-			`reply like this: #rename DISPLAYNAME = REAL NAME`,
-		].join('\n\n')
+			`Time: ${time}\n`,
+			`HANDLE: ${handle}\n`,
+			`Please enter real name for this agent\n`,
+			`reply like this: #rename HANDLE = REAL NAME`,
+		].join('\n')
 
 		await sendPushMsg(MyUserId, msg2)
 

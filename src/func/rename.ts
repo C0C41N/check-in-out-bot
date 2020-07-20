@@ -1,3 +1,5 @@
+// Add index on Handle - DB
+
 import { db, getSheets } from '../api'
 import { MyUserId } from '../ts/const'
 import { IAgentDB } from './getAgentDb'
@@ -7,17 +9,17 @@ import { sendPushMsg } from './sendPushMsg'
 export async function renameAgent(query: string) {
 
 	const split = query.split('=')
-	const displayName = split[0].split('#rename').join('').trim()
+	const handle = split[0].split('#rename').join('').trim()
 	const realName = split[1].trim()
 
 	const snap = await db.ref('agents')
-		.orderByChild('displayName')
-		.equalTo(displayName)
+		.orderByChild('handle')
+		.equalTo(handle)
 		.once('value')
 
 	if (!snap.exists()) {
 
-		const msg = `displayName: ${displayName} not found!`
+		const msg = `handle: ${handle} not found!`
 
 		await sendPushMsg(MyUserId, msg)
 
@@ -30,6 +32,8 @@ export async function renameAgent(query: string) {
 		const userId = Object.keys(val)[0]
 
 		await db.ref(`agents/${userId}`).update({ realName })
+
+		const displayName = (await db.ref(`agents/${userId}/displayName`).once('value')).val()
 
 		const msg = [
 			`Ok! Real Name Set,`,

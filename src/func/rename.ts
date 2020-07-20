@@ -6,9 +6,9 @@ import { sendPushMsg } from './sendPushMsg'
 // prettier-ignore
 export async function renameAgent(query: string) {
 
-	const split = query.split(/[\s]+/g)
-	const displayName = split[1]
-	const realName = split[3]
+	const split = query.split('=')
+	const displayName = split[0].split('#rename').join('').trim()
+	const realName = split[1].trim()
 
 	const snap = await db.ref('agents')
 		.orderByChild('displayName')
